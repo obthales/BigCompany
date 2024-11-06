@@ -1,0 +1,11 @@
+Id,firstName,lastName,salary,managerId
+123,Joe,Doe,1000000,
+124,Martin,Chekov,450000,123
+125,Bob,Ronstad,47000,123
+300,Alice,Hasacat,50000,124
+305,Brett,Hardleaf,34000,300
+306,Andre,Silva,30000,305
+307,Andrey,Kokonenko,33000,305
+308,Brandy,Silver,25000,306
+309,Carlos,Garcia,20000,308
+310,Jose,Perez,10000,309

@@ -6,9 +6,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicReference;
@@ -51,13 +49,13 @@ public class CsvParser {
     }
 
     private Employee createEmployeeNode(Map<String, String> record) {
-        Employee node = new Employee();
-        node.setId(record.get("Id"));
-        node.setFirstName(record.get("firstName"));
-        node.setLastName(record.get("lastName"));
-        node.setSalary(new BigDecimal(record.get("salary")));
-        node.setManagerId(record.get("managerId"));
-        return node;
+        Employee employee = new Employee();
+        employee.setId(record.get("Id"));
+        employee.setFirstName(record.get("firstName"));
+        employee.setLastName(record.get("lastName"));
+        employee.setSalary(new BigDecimal(record.get("salary")));
+        employee.setManagerId(record.get("managerId"));
+        return employee;
     }
 
     public Employee buildCompanyStructure(Map<String, Employee> employeesById) {

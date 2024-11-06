@@ -6,9 +6,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Employee {
-    public static final String SALARY_PERCENTAGE_UPPER_LIMIT = "1.5";
-    public static final String SALARY_PERCENTAGE_LOWER_LIMIT = "1.2";
-    public static final int MAXIMUM_MANAGERS_ALLOWED = 4;
+    final String SALARY_PERCENTAGE_UPPER_LIMIT = "1.5";
+    final String SALARY_PERCENTAGE_LOWER_LIMIT = "1.2";
+    final int MAXIMUM_MANAGERS_ALLOWED = 4;
 
 
     private Employee manager;
@@ -27,10 +27,6 @@ public class Employee {
     private BigDecimal averageDirectSubordinateSalary;
 
     // Getters and setters
-
-    public Employee getManager() {
-        return manager;
-    }
 
     public void setManager(Employee manager) {
         this.manager = manager;
@@ -91,69 +87,7 @@ public class Employee {
         this.managerId = managerId;
     }
 
-    public Integer getTotalPeopleBelowPlusSelf() {
-        if (totalPeopleBelowPlusSelf == null) {
-            int totalPeopleBelow = 0;
-
-            if (subordinates != null) {
-                totalPeopleBelow = subordinates.parallelStream()
-                        .mapToInt(Employee::getTotalPeopleBelowPlusSelf)
-                        .sum();
-            }
-
-            totalPeopleBelowPlusSelf = totalPeopleBelow + 1;
-        }
-
-        return totalPeopleBelowPlusSelf;
-    }
-
-    private Integer getTotalPeopleBelow(){
-        return getTotalPeopleBelowPlusSelf() - 1;
-    }
-
-    public BigDecimal getTotalSalariesBelowPlusSelf() {
-        if (totalSalariesBelowPlusSelf == null) {
-            BigDecimal totalSalariesBelow = BigDecimal.ZERO;
-
-            if (subordinates != null) {
-                totalSalariesBelow = subordinates.parallelStream()
-                        .map(Employee::getTotalSalariesBelowPlusSelf)
-                        .reduce(BigDecimal.ZERO, BigDecimal::add);
-            }
-
-            totalSalariesBelowPlusSelf = totalSalariesBelow.add(salary);
-        }
-
-        return totalSalariesBelowPlusSelf;
-    }
-
-    private BigDecimal getTotalSalariesBelow() {
-        return getTotalSalariesBelowPlusSelf().subtract(salary);
-    }
-
-    public Integer getTotalPeopleAbove() {
-        if (totalPeopleAbove == null) {
-            totalPeopleAbove = 0;
-
-            if (manager != null) {
-                totalPeopleAbove = 1 + manager.getTotalPeopleAbove();
-            }
-        }
-
-        return totalPeopleAbove;
-    }
-
-    public BigDecimal getTotalSubortinatesAverageSalary() {
-        if (getTotalPeopleBelow() == 0) {
-            return null;
-        }
-
-        BigDecimal totalSalaries = getTotalSalariesBelow();
-        BigDecimal totalPeople = new BigDecimal(getTotalPeopleBelow());
-
-        // Specify scale and rounding mode
-        return totalSalaries.divide(totalPeople, 2, RoundingMode.HALF_UP); // 2 decimal places
-    }
+    // Compute expected salaries and distance from CEO
 
     public BigDecimal getDirectSubortinatesAverageSalary() {
         if (averageDirectSubordinateSalary != null) {
@@ -234,12 +168,78 @@ public class Employee {
         return directSubortinatesAverageSalary.multiply(new BigDecimal(SALARY_PERCENTAGE_LOWER_LIMIT));
     }
 
+    public Integer getTotalPeopleAbove() {
+        if (totalPeopleAbove == null) {
+            totalPeopleAbove = 0;
+
+            if (manager != null) {
+                totalPeopleAbove = 1 + manager.getTotalPeopleAbove();
+            }
+        }
+
+        return totalPeopleAbove;
+    }
+
     public boolean isFarFromCeo() {
         return getTotalPeopleAbove() > MAXIMUM_MANAGERS_ALLOWED + 1; // Managers + CEO
     }
 
     public int getDistanceToCeo() {
         return getTotalPeopleAbove() - 1; // Managers - CEO
+    }
+
+    // Methods below are used for final result. Kept here for didactic purposes.
+
+    public Integer getTotalPeopleBelowPlusSelf() {
+        if (totalPeopleBelowPlusSelf == null) {
+            int totalPeopleBelow = 0;
+
+            if (subordinates != null) {
+                totalPeopleBelow = subordinates.parallelStream()
+                        .mapToInt(Employee::getTotalPeopleBelowPlusSelf)
+                        .sum();
+            }
+
+            totalPeopleBelowPlusSelf = totalPeopleBelow + 1;
+        }
+
+        return totalPeopleBelowPlusSelf;
+    }
+
+    private Integer getTotalPeopleBelow(){
+        return getTotalPeopleBelowPlusSelf() - 1;
+    }
+
+    public BigDecimal getTotalSalariesBelowPlusSelf() {
+        if (totalSalariesBelowPlusSelf == null) {
+            BigDecimal totalSalariesBelow = BigDecimal.ZERO;
+
+            if (subordinates != null) {
+                totalSalariesBelow = subordinates.parallelStream()
+                        .map(Employee::getTotalSalariesBelowPlusSelf)
+                        .reduce(BigDecimal.ZERO, BigDecimal::add);
+            }
+
+            totalSalariesBelowPlusSelf = totalSalariesBelow.add(salary);
+        }
+
+        return totalSalariesBelowPlusSelf;
+    }
+
+    private BigDecimal getTotalSalariesBelow() {
+        return getTotalSalariesBelowPlusSelf().subtract(salary);
+    }
+
+    public BigDecimal getTotalSubortinatesAverageSalary() {
+        if (getTotalPeopleBelow() == 0) {
+            return null;
+        }
+
+        BigDecimal totalSalaries = getTotalSalariesBelow();
+        BigDecimal totalPeople = new BigDecimal(getTotalPeopleBelow());
+
+        // Specify scale and rounding mode
+        return totalSalaries.divide(totalPeople, 2, RoundingMode.HALF_UP); // 2 decimal places
     }
 
 }

@@ -188,7 +188,7 @@ public class Employee {
         return getTotalPeopleAbove() - 1; // Managers - CEO
     }
 
-    // Methods below are used for final result. Kept here for didactic purposes.
+    // Methods below are NOT used for final result. Kept here for didactic purposes.
 
     public Integer getTotalPeopleBelowPlusSelf() {
         if (totalPeopleBelowPlusSelf == null) {

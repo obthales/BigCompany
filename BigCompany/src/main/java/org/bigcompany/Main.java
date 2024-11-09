@@ -24,7 +24,7 @@ public class Main {
         try {
             var ceo = csvParser.parseCsv(filePath);
             var metrics = service.navigateStructureAndProcessMetrics(ceo);
-            ResultsParser.DisplayOnConsole(metrics);
+            ResultsParser.displayOnConsole(metrics);
         } catch (IOException e) {
             System.out.println(MessageFormat.format("Error reading file {0}", filePath));
         }

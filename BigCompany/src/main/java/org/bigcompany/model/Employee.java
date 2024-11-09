@@ -6,9 +6,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Employee {
-    final String SALARY_PERCENTAGE_UPPER_LIMIT = "1.5";
-    final String SALARY_PERCENTAGE_LOWER_LIMIT = "1.2";
-    final int MAXIMUM_MANAGERS_ALLOWED = 4;
+    static final String SALARY_PERCENTAGE_UPPER_LIMIT = "1.5";
+    static final String SALARY_PERCENTAGE_LOWER_LIMIT = "1.2";
+    static final int MAXIMUM_MANAGERS_ALLOWED = 4;
 
 
     private Employee manager;

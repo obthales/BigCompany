@@ -13,7 +13,7 @@ public class ResultsParser {
         UNDERPAID
     }
 
-    public static void DisplayOnConsole(Metrics metrics) {
+    public static void displayOnConsole(Metrics metrics) {
         printEmployeesFarFromCeo(metrics);
         printOverpaidAndUnderpaidManagers(metrics, ListType.OVERPAID);
         printOverpaidAndUnderpaidManagers(metrics, ListType.UNDERPAID);
